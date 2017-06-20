@@ -1,20 +1,22 @@
 import { Joke } from '../joke';
 import { JokeComponent } from '../joke/joke.component';
-import { Component, ViewChild } from '@angular/core';
-import { AfterViewInit } from '@angular/core';
-import { ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
+import { AfterViewInit, AfterContentInit } from '@angular/core';
+import { ViewChild, ViewChildren, QueryList, ElementRef, ContentChild, ContentChildren } from '@angular/core';
 
 @Component({
   selector: 'app-joke-list',
   templateUrl: './joke-list.component.html',
   styleUrls: ['./joke-list.component.css']
 })
-export class JokeListComponent implements AfterViewInit {
+export class JokeListComponent implements AfterContentInit, AfterViewInit {
     jokes: Joke[];
 
     @ViewChild(JokeComponent) jokeViewChild: JokeComponent;
     @ViewChildren(JokeComponent) jokeViewChildren: QueryList<JokeComponent>;
     @ViewChild("header") headerEl: ElementRef;
+
+    @ContentChild(JokeComponent) jokeContentChild: JokeComponent;
 
     constructor() {
         this.jokes = [
@@ -33,6 +35,10 @@ export class JokeListComponent implements AfterViewInit {
         if (indexToDelete !== -1) {
             this.jokes.splice(indexToDelete, 1);
         }
+    }
+
+    ngAfterContentInit() {
+        console.log(`ngAfterContentInit - jokeContentChild is ${this.jokeContentChild}`);
     }
 
     ngAfterViewInit() {
