@@ -1,7 +1,8 @@
 import { Joke } from '../joke';
-import { JokeComponent } from '../joke/joke.component'
+import { JokeComponent } from '../joke/joke.component';
 import { Component, ViewChild } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
+import { ViewChildren, QueryList, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-joke-list',
@@ -12,6 +13,8 @@ export class JokeListComponent implements AfterViewInit {
     jokes: Joke[];
 
     @ViewChild(JokeComponent) jokeViewChild: JokeComponent;
+    @ViewChildren(JokeComponent) jokeViewChildren: QueryList<JokeComponent>;
+    @ViewChild("header") headerEl: ElementRef;
 
     constructor() {
         this.jokes = [
@@ -34,5 +37,11 @@ export class JokeListComponent implements AfterViewInit {
 
     ngAfterViewInit() {
         console.log(`new - jokeViewChild is ${this.jokeViewChild}`);
+        let jokes: JokeComponent[] = this.jokeViewChildren.toArray();
+        console.log(jokes);
+
+        console.log(`ngAfterViewInit - headerEl is ${this.headerEl}`);
+
+        this.headerEl.nativeElement.textContent = "Best Joke Machine";
     }
 }
